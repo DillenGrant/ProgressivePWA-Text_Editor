@@ -1,16 +1,21 @@
 import { openDB } from 'idb';
 
-const initdb = async () =>
-  openDB('jate', 1, {
+const DB_NAME = 'jate';
+const DB_VERSION = 1;
+const DB_STORE_NAME = 'jate';
+
+const initdb = () => {
+  return openDB(DB_NAME, DB_VERSION, {
     upgrade(db) {
-      if (db.objectStoreNames.contains('jate')) {
-        console.log('jate database already exists');
+      if (db.objectStoreNames.contains(DB_STORE_NAME)) {
+        console.log(`${DB_STORE_NAME} database already exists`);
         return;
       }
-      db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
-      console.log('jate database created');
+      db.createObjectStore(DB_STORE_NAME, { keyPath: 'id', autoIncrement: true });
+      console.log(`${DB_STORE_NAME} database created`);
     },
   });
+};
 
 // TODO: Add logic to a method that accepts some content and adds it to the database
 export const putDb = async (content) => {
